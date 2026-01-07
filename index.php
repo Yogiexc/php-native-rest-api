@@ -18,6 +18,7 @@ require_once __DIR__ . '/controllers/UserController.php';
 require_once __DIR__ . '/helpers/Paginator.php';
 require_once __DIR__ . '/helpers/Validator.php';
 require_once __DIR__ . '/middleware/RateLimiter.php';
+require_once __DIR__ . '/middleware/AuthMiddleware.php';
 
 // Global Error Handler
 set_exception_handler(function($exception) {
