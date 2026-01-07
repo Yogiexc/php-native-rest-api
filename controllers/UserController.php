@@ -56,6 +56,13 @@ class UserController
     {
         try {
             $data = Request::body();
+            
+            // Validate request
+            Validator::make($data, [
+                'name' => 'required|min:3|max:255',
+                'email' => 'required|email|max:255'
+            ]);
+            
             $userId = $this->userModel->create($data);
             $user = $this->userModel->find($userId);
             
@@ -65,7 +72,15 @@ class UserController
             ]);
             
         } catch (Exception $e) {
-            Response::error($e->getMessage(), 400);
+            // Check if validation error
+            $message = $e->getMessage();
+            $decoded = json_decode($message, true);
+            
+            if (isset($decoded['validation_errors'])) {
+                Response::error($decoded['validation_errors'], 422);
+            } else {
+                Response::error($message, 400);
+            }
         }
     }
 
@@ -73,6 +88,13 @@ class UserController
     {
         try {
             $data = Request::body();
+            
+            // Validate request
+            Validator::make($data, [
+                'name' => 'required|min:3|max:255',
+                'email' => 'required|email|max:255'
+            ]);
+            
             $this->userModel->update($id, $data);
             $user = $this->userModel->find($id);
             
@@ -82,7 +104,14 @@ class UserController
             ]);
             
         } catch (Exception $e) {
-            Response::error($e->getMessage(), 400);
+            $message = $e->getMessage();
+            $decoded = json_decode($message, true);
+            
+            if (isset($decoded['validation_errors'])) {
+                Response::error($decoded['validation_errors'], 422);
+            } else {
+                Response::error($message, 400);
+            }
         }
     }
 
