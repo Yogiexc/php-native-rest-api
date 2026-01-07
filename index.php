@@ -15,6 +15,7 @@ require_once __DIR__ . '/helpers/Request.php';
 require_once __DIR__ . '/middleware/JsonMiddleware.php';
 require_once __DIR__ . '/models/User.php';
 require_once __DIR__ . '/controllers/UserController.php';
+require_once __DIR__ . '/helpers/Paginator.php';
 
 // Global Error Handler
 set_exception_handler(function($exception) {
