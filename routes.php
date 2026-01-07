@@ -1,11 +1,26 @@
 <?php
 /**
- * ROUTING MANUAL
+ * ROUTES
+ * Tambahkan route untuk search (LETAKKAN SEBELUM GET /users)
  */
 
 $userController = new UserController();
 
-// GET /users
+// GET /users/search?q=keyword
+if ($method === 'GET' && $uri === '/users/search') {
+    $keyword = Request::query('q', '');
+    $page = Request::query('page', 1);
+    $limit = Request::query('limit', 10);
+    
+    if (empty($keyword)) {
+        Response::error('Query parameter "q" is required', 400);
+    }
+    
+    $userController->search($keyword, $page, $limit);
+    exit;
+}
+
+// GET /users (existing route)
 if ($method === 'GET' && $uri === '/users') {
     $userController->index();
     exit;
