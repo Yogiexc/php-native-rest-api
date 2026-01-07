@@ -1,6 +1,7 @@
 <?php
 /**
  * RESPONSE HELPER
+ * Update dengan logging
  */
 
 class Response
@@ -9,12 +10,16 @@ class Response
     {
         http_response_code($code);
         
-        echo json_encode([
+        $response = [
             'success' => true,
             'data' => $data,
             'timestamp' => date('Y-m-d H:i:s')
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        ];
         
+        // Log response
+        Logger::response($code, $response);
+        
+        echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         exit;
     }
 
@@ -22,12 +27,16 @@ class Response
     {
         http_response_code($code);
         
-        echo json_encode([
+        $response = [
             'success' => false,
             'message' => $message,
             'timestamp' => date('Y-m-d H:i:s')
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        ];
         
+        // Log error
+        Logger::error($message, ['status_code' => $code]);
+        
+        echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         exit;
     }
 
@@ -39,6 +48,7 @@ class Response
     public static function noContent()
     {
         http_response_code(204);
+        Logger::response(204, 'No content');
         exit;
     }
 }

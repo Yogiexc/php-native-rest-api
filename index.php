@@ -19,6 +19,7 @@ require_once __DIR__ . '/helpers/Paginator.php';
 require_once __DIR__ . '/helpers/Validator.php';
 require_once __DIR__ . '/middleware/RateLimiter.php';
 require_once __DIR__ . '/middleware/AuthMiddleware.php';
+require_once __DIR__ . '/helpers/Logger.php';
 
 // Global Error Handler
 set_exception_handler(function($exception) {
@@ -32,6 +33,7 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
 // Apply JSON Middleware
 JsonMiddleware::handle();
 RateLimiter::check();
+Logger::request();
 
 // Get method dan URI
 $method = Request::method();

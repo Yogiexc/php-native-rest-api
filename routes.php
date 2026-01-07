@@ -1,9 +1,21 @@
 <?php
 /**
  * ROUTES
- * Update dengan authentication
+ * Tambahkan di bagian paling atas (sebelum route lainnya)
  */
 
+// GET /logs (public - untuk demo, di production harus protected)
+if ($method === 'GET' && $uri === '/logs') {
+    $date = Request::query('date');
+    $logs = Logger::getLogs($date);
+    
+    Response::success([
+        'date' => $date ?? date('Y-m-d'),
+        'total' => count($logs),
+        'logs' => $logs
+    ]);
+    exit;
+}
 $userController = new UserController();
 
 // POST /login (public - no auth)
